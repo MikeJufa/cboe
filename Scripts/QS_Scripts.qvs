@@ -46,6 +46,10 @@ FROM CSV (header on, delimiter ",", quote """") "CSV_source"
 ;
 
 Main:
+Load *
+    , Window(Avg(Volume),[Symbol],[Trade Date]) as AvgVol
+    , Window(Avg(Volume*[Last Price]*100),[Symbol],[Trade Date]) as AvgAmt
+;
 Load 
       $(vToday) as [Trade Date]
     , [Symbol]
@@ -53,11 +57,11 @@ Load
     , [Matched]
     , [Routed]
     , [Expiration]
-    , Num([Strike Price],'#,##0.00') as [Strike Price]
-    , If([Expiration]<=$(vToday),0,Num([Last Price],'$#,##0.00')) as [Last Price]
+    , [Strike Price]
     , WeekDay([Expiration]) as Exp_Wkdy
-    , If([Expiration]<=$(vToday),0,Num([Volume],'#,##0')) as [Volume]
     , Year([Expiration])&'-'&Month([Expiration]) as Exp_YrMth
+    , If([Expiration]<=$(vToday),0,[Volume]) as [Volume]
+    , If([Expiration]<=$(vToday),0,[Last Price]) as [Last Price]
     , If(Volume=Matched,0,1) as IsMatched
     , 1 as CountNum
 ;
@@ -74,4 +78,7 @@ RESIDENT RestConnectorMasterTable;
 
 DROP TABLE RestConnectorMasterTable;
 
-Store Main into [lib://DataFiles/cboe_daily.qvd](qvd);
+//Store Main into [lib://DataFiles/cboe_daily.qvd](qvd);
+//Concatenate(Main)
+
+
