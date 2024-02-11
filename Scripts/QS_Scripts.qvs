@@ -26,6 +26,7 @@ LET vNow = Now();
 LET vReload = Timestamp(ReloadTime()-5/24);
 SET vSelectDim = 1;
 SET vSelectMeasures = 1;
+SET vHidePrefix = '_';
 
 Main:
 Load *
@@ -36,10 +37,10 @@ Load *
     , If([Symbol]='VIX',1,0) as IsVIX
 ;
 Load *
-    , Window(Avg(Volume),[Symbol],[Trade Date]) as AvgVol
-    , Window(Avg(Volume*[Last Price]*100),[Symbol],[Trade Date]) as AvgAmt
-    , Window(Sum(Volume),[Symbol],[Trade Date]) as SumVol
-    , Window(Sum(Volume*[Last Price]*100),[Symbol],[Trade Date]) as SumAmt
+//    , Window(Avg(Volume),[Symbol],[Trade Date]) as AvgVol
+//    , Window(Avg(Volume*[Last Price]*100),[Symbol],[Trade Date]) as AvgAmt
+//    , Window(Sum(Volume),[Symbol],[Trade Date]) as SumVol
+//    , Window(Sum(Volume*[Last Price]*100),[Symbol],[Trade Date]) as SumAmt
     , If([Expiration]-Today()<0,'Exp',[Expiration]-Today()) as ToExpDays
 ;
 Load 
@@ -50,7 +51,7 @@ Load
     , [Routed]
     , [Expiration]
     , [Strike Price]
-    , [Data Source]
+//    , [Data Source]
     , WeekDay([Expiration]) as Exp_Wkdy
     , Year([Expiration])&'-'&Month([Expiration]) as Exp_YrMth
     , If([Expiration]<$(vToday),0,[Volume]) as [Volume]
