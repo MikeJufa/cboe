@@ -133,7 +133,7 @@ END IF
 
 
 /*
-//Initially 2024-02-08 cboe all options daily data file.
+//Initially 2023-06-16 cboe all options daily data file.
 SET vEnv = 'Prod';
 
 FOR EACH vDataSource in 'bzx', 'c2', 'cboe', 'edgx'
@@ -170,7 +170,7 @@ FOR EACH vDataSource in 'bzx', 'c2', 'cboe', 'edgx'
       [Ask Size],
       [Ask Price],
       [Last Price],
-      '2024-02-08' as [Trade Date],
+      '2023-06-16' as [Trade Date],
       '$(vDataSource)' as [Data Source]
   RESIDENT RestConnectorMasterTable;
 
@@ -178,9 +178,7 @@ FOR EACH vDataSource in 'bzx', 'c2', 'cboe', 'edgx'
 
 NEXT
   
-STORE [CSV_source] into [lib://Jufa_$(vEnv):DataFiles/$(vEnv)_CBOE_all_options_data.qvd](qvd);
-*/
+STORE [CSV_source] into [lib://Jufa_$(vEnv):DataFiles/$(vEnv)_CBOE_all_options_data_bkup.qvd](qvd);
+
 SET vDataSource = '';
-
-
-
+*/
